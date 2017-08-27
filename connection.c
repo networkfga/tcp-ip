@@ -13,7 +13,7 @@ int bufferLength = 0;
 unsigned short serverPort = 9600;
 
 int connect_to_socket(void){
-    socketId = socket(AF_INET, SOCK_STREAM, IPPROT_TCP);
+    socketId = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (socketId < 0){
         fprintf(stderr, "Erro na criacao do socket!\n");
         exit(0);
