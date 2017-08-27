@@ -7,15 +7,28 @@
 #include <unistd.h>
 
 int connect_to_socket();
+void send_message(int socketId, char* message, int messageLength, int flag);
 
 char serverIp[] = "192.168.0.11";
 int socketId = 0;
 struct sockaddr_in serverAddress;
 int bufferLength = 0;
-unsigned short serverPort = 9600;
+unsigned short serverPort = 9601;
 
 void main (void){
+    printf ("Client::::\n");
     int result = connect_to_socket();
+    
+    char message[] = "2 + 3";
+    int messageLength = sizeof(message);
+    printf("%d", messageLength);
+    int flag = 0;
+
+    send_message(result, message, messageLength, flag);
+
+    if (result > 0){
+        printf("Connection stablished!\n");
+    }
 }
 
 int connect_to_socket(void){
@@ -37,4 +50,14 @@ int connect_to_socket(void){
     }
 
     return socketId;
+}
+
+void send_message(int socketId, char* message, int messageLength, int flag){
+    int canSendMessage;
+    canSendMessage = send(socketId, message, messageLength, flag);
+
+    if (canSendMessage < 0){
+        fprintf(stderr, "Erro no envio da mensagem!\n");
+    }
+    
 }
