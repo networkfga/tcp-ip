@@ -9,7 +9,7 @@
 int connect_to_socket();
 void send_message(int socketId, char* message, int messageLength, int flag);
 
-char serverIp[] = "192.168.0.11";
+char serverIp[] = "104.196.176.228";
 int socketId = 0;
 struct sockaddr_in serverAddress;
 int bufferLength = 0;
@@ -19,7 +19,7 @@ void main (void){
     printf ("Client::::\n");
     int result = connect_to_socket();
     
-    char message[] = "2 + 3";
+    char message[] = "EAE PAUNOCU!?";
     int messageLength = sizeof(message);
     printf("%d", messageLength);
     int flag = 0;
