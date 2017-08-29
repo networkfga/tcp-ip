@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 #include <sys/un.h>
 #include <unistd.h>
-#include "inc/client.h"
+#include "../inc/client.h"
 
 char serverIp[] = "104.196.176.228";
 int socketId = 0;
