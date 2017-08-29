@@ -3,17 +3,25 @@
 ## Instalação
 
 Baixe o repositório utilizando:
-´$ git clone https://github.com/networkfga/tcp-ip.git´
+```shell
+$ git clone https://github.com/networkfga/tcp-ip.git
+```
 
 Dentro da pasta execute:
-´$ make´
+```
+$ make
+```
 
 ## Execução
 
 ### Cliente
-´$ ./bin/client.bin´
+```
+$ ./bin/client.bin
+```
 
 ### Servidor
-´$ ./bin/server.bin IP_PARA_CONEXAO´
+```
+$ ./bin/server.bin IP_PARA_CONEXAO
+```
 
 
