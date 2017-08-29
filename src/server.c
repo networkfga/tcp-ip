@@ -5,8 +5,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/un.h>
-
-
+#include "inc/server.h"
 
 int socket_id;
 

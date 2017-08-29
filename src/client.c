@@ -5,9 +5,7 @@
 #include <arpa/inet.h>
 #include <sys/un.h>
 #include <unistd.h>
-
-int connect_to_socket();
-void send_message(int socketId, char* message, int messageLength, int flag);
+#include "inc/client.h"
 
 char serverIp[] = "104.196.176.228";
 int socketId = 0;
