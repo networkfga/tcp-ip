@@ -16,12 +16,16 @@ $ make
 
 ### Cliente
 ```
-$ ./bin/client.bin
+$ make exec_client
 ```
 
 ### Servidor
 ```
-$ ./bin/server.bin IP_PARA_CONEXAO
+$ make exec_server port=PORTA
+```
+Exemplo:
+```
+$ make exec_server port=2152
 ```
 
 
