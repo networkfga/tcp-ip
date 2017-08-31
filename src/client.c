@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include "../inc/client.h"
 
-char serverIp[] = "104.196.176.228";
+char serverIp[] = "192.168.0.20";
 int socketId = 0;
 struct sockaddr_in serverAddress;
 int bufferLength = 0;
@@ -15,18 +15,23 @@ unsigned short serverPort = 9601;
 
 void main (void){
     printf ("Client::::\n");
-    int result = connect_to_socket();
-    
-    char message[] = "EAE PAUNOCU!?";
-    int messageLength = sizeof(message);
-    printf("%d", messageLength);
-    int flag = 0;
+    const char* exit = "exit";
+    char* message;
+    do {
+        printf(">> ");
+        fflush(stdin);
+        message = fgets(message, 50, stdin);
+        int messageLength = sizeof(message);
+        printf("Message Bytes = %d\n", messageLength);
+        int flag = 0;
+        
+        int result = connect_to_socket();
+        if (result > 0){
+            printf("Connection stablished!\n");
+        }
 
-    send_message(result, message, messageLength, flag);
-
-    if (result > 0){
-        printf("Connection stablished!\n");
-    }
+        send_message(result, message, messageLength, flag);
+    } while (strcmp(exit, message) != 0);
 }
 
 int connect_to_socket(void){
