@@ -7,14 +7,19 @@
 #include <sys/un.h>
 #include "../inc/server.h"
 
+void send_message(int socketId, char* message, int messageLength, int flag);
+void recv_message(int socketId, char* message, int messageLength, int flag);
+
+char default_message [] = {"essa mensagem veio do servidor"};
 int socket_id;
+int length = 100 ;
+char* receivedMessage;
 
 int main (int argc, char* const argv[])
 {
 	unsigned short serverPort;
 	struct sockaddr_in serverAddress;
   	serverPort= atoi(argv[1]);
-
 	fprintf(stderr, "Feito!\n");
 	
 	fprintf(stderr, "Abrindo o socket local... ");
@@ -63,19 +68,13 @@ int main (int argc, char* const argv[])
 		
 		fprintf(stderr, "Tratando comunicacao com o cliente... ");
 		fprintf(stderr, "Feito!\n");
+			
+		send_message(socketClient,default_message, sizeof(default_message), 0);
+		recv_message(socketClient , receivedMessage ,100,0);
 		
-		int length = 100 ;
-		char* receivedMessage;
-	
-		fprintf(stderr, "%d\n",length );
-		receivedMessage = (char*) malloc (length);
-		recv(socketClient,receivedMessage,length,0);
-		fprintf(stderr, "%s",receivedMessage);
-		free(receivedMessage);
 
 
 		fprintf(stderr, "Fechando a conexao com o cliente... ");
-		
 		close(socketClient);
 		fprintf(stderr, "Feito\n");
 
@@ -83,4 +82,28 @@ int main (int argc, char* const argv[])
 
 
 	return 0;
+}
+
+void send_message(int socketId, char* message, int messageLength, int flag){
+    int canSendMessage;
+    canSendMessage = send(socketId, message, messageLength, flag);
+
+    if (canSendMessage < 0){
+        fprintf(stderr, "Erro no envio da mensagem!\n");
+    }
+}
+
+void recv_message(int socketId, char* message, int messageLength, int flag)
+{
+     message = (char*) malloc (100);
+    int canRecvMessage;
+    canRecvMessage = recv(socketId, message, messageLength, flag);
+
+    if (canRecvMessage < 0)
+    {
+        fprintf(stderr, "Erro ao receber mensagem\n");
+    }
+
+    fprintf(stderr, " oi %s\n",message );
+    free(message);
 }
