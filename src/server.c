@@ -8,6 +8,9 @@
 #include "../inc/server.h"
 
 int socket_id;
+char default_message [] = {"essa mensagem veio do servidor"};
+char* serverInterpreterResult;
+char* receivedMessage;
 
 int main (int argc, char* const argv[])
 {
@@ -60,23 +63,17 @@ int main (int argc, char* const argv[])
 			fprintf(stderr, "Feito!\n");
 		
 		fprintf(stderr, "Conexão do Cliente %s\n", inet_ntoa(clienteAddr.sin_addr));
-		
 		fprintf(stderr, "Tratando comunicacao com o cliente... ");
 		fprintf(stderr, "Feito!\n");
+
+
+		// float interpretationResult = interpret_with_bc(receivedMessage);
+		// printf("%s ===> %f\n", receivedMessage, interpretationResult);
+		// free(receivedMessage);
+		recv_message(socketClient , receivedMessage ,100,0);
 		
-		int length = 100 ;
-		char* receivedMessage;
-	
-		fprintf(stderr, "%d\n",length );
-		receivedMessage = (char*) malloc (length);
-		recv(socketClient,receivedMessage,length,0);
-
-		fprintf(stderr, "RECEIVED MESSAGE: %s\n",receivedMessage);
-
-		float interpretationResult = interpret_with_bc(receivedMessage);
-		printf("%s ===> %f\n", receivedMessage, interpretationResult);
-		free(receivedMessage);
-
+		send_message(socketClient, serverInterpreterResult, sizeof(float), 0);
+		
 
 		fprintf(stderr, "Fechando a conexao com o cliente... ");
 		
@@ -86,22 +83,52 @@ int main (int argc, char* const argv[])
 	return 0;
 }
 
-float interpret_with_bc(const char *expression){
+char* interpret_with_bc(const char *expression){
 	FILE *bc_output;
     char command[1000];
-    char result[1000];
+    char* result = malloc (1000);
 
     snprintf(command, sizeof(command), "echo '%s\n' | bc -l", expression);
     bc_output = popen(command, "r");
     if (!bc_output){
+    	//return -1;
 		printf("File ERROR!\n");
-		return -1;
     } 
     	
     if (!fgets(result, sizeof(result), bc_output)){
+    	//return -1;
     	printf("SYNTAX or BUFFER error!\n");
-    	return -1;	
-    } 
+    }  
    pclose(bc_output);
-   return strtod(result, NULL);
+   return (result);
+}
+
+void send_message(int socketId, char* message, int messageLength, int flag){
+	int canSendMessage;
+	canSendMessage = send(socketId, message, messageLength, flag);
+
+	if (canSendMessage < 0){
+      fprintf(stderr, "Erro no envio da mensagem!\n");
+	}
+}
+
+void recv_message(int socketId, char* message, int messageLength, int flag){
+    message = (char*) malloc (100);
+    int canRecvMessage;
+    canRecvMessage = recv(socketId, message, messageLength, flag);
+
+    if (canRecvMessage < 0)
+    {
+        fprintf(stderr, "Erro ao receber mensagem\n");
+    }
+
+    fprintf(stderr, " oi %s\n",message );
+
+    serverInterpreterResult = (char*) malloc (sizeof(message));
+
+    serverInterpreterResult = interpret_with_bc(message);
+    printf("%s\n", serverInterpreterResult);
+	printf("%s ===> %s\n", message, serverInterpreterResult);
+
+    free(message);
 }
