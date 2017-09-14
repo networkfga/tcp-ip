@@ -70,7 +70,11 @@ int main (int argc, char* const argv[])
 		fprintf(stderr, "%d\n",length );
 		receivedMessage = (char*) malloc (length);
 		recv(socketClient,receivedMessage,length,0);
-		fprintf(stderr, "%s",receivedMessage);
+
+		fprintf(stderr, "RECEIVED MESSAGE: %s\n",receivedMessage);
+
+		float interpretationResult = interpret_with_bc(receivedMessage);
+		printf("%s ===> %f\n", receivedMessage, interpretationResult);
 		free(receivedMessage);
 
 
@@ -78,9 +82,26 @@ int main (int argc, char* const argv[])
 		
 		close(socketClient);
 		fprintf(stderr, "Feito\n");
-
 	}
-
-
 	return 0;
+}
+
+float interpret_with_bc(const char *expression){
+	FILE *bc_output;
+    char command[1000];
+    char result[1000];
+
+    snprintf(command, sizeof(command), "echo '%s\n' | bc -l", expression);
+    bc_output = popen(command, "r");
+    if (!bc_output){
+		printf("File ERROR!\n");
+		return -1;
+    } 
+    	
+    if (!fgets(result, sizeof(result), bc_output)){
+    	printf("SYNTAX or BUFFER error!\n");
+    	return -1;	
+    } 
+   pclose(bc_output);
+   return strtod(result, NULL);
 }
