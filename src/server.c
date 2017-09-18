@@ -122,13 +122,10 @@ void recv_message(int socketId, char* message, int messageLength, int flag){
         fprintf(stderr, "Erro ao receber mensagem\n");
     }
 
-    fprintf(stderr, " oi %s\n",message );
-
+   
     serverInterpreterResult = (char*) malloc (sizeof(message));
-
     serverInterpreterResult = interpret_with_bc(message);
-    printf("%s\n", serverInterpreterResult);
-	printf("%s ===> %s\n", message, serverInterpreterResult);
+   	printf("%s ===> %s\n", message, serverInterpreterResult);
 
     free(message);
 }

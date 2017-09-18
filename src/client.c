@@ -7,18 +7,20 @@
 #include <unistd.h>
 #include "../inc/client.h"
 
-char serverIp[] = "192.168.0.11";
+
 int socketId = 0;
 struct sockaddr_in serverAddress;
 int bufferLength = 0;
-unsigned short serverPort = 9601;
+unsigned short serverPort = 9602;
 char* messageReceived;
 char messageSent[100];
 int length = 100 ;
 
 void recv_message(int socketId, char* message, int messageLength, int flag);
 
-void main (void){
+int main (int argc, char* const argv[])
+{	
+	char *serverIp = argv[1];
     printf ("Client::::\n");
     const char* exit = "exit";
     
@@ -27,11 +29,12 @@ void main (void){
         fflush(stdin);
         scanf("%s", messageSent);
         int messageLength = sizeof(messageSent);
-        printf("Message Bytes = %d\n", messageLength);
         int flag = 0;
         fprintf(stderr, "%s\n",messageSent);
-        int result = connect_to_socket();
-        if (result > 0){
+        int result = connect_to_socket(serverIp);
+
+        if (result > 0)
+        {
             printf("Connection stablished!\n");
         }
 
@@ -41,9 +44,11 @@ void main (void){
     } while (strcmp(exit, messageSent) != 0);
 }
 
-int connect_to_socket(void){
+int connect_to_socket(char *serverIp)
+{
     socketId = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (socketId < 0){
+    if (socketId < 0)
+    {
         fprintf(stderr, "Erro na criacao do socket!\n");
         exit(0);
     }
@@ -54,7 +59,8 @@ int connect_to_socket(void){
     serverAddress.sin_port = htons(serverPort);
 
     if (connect(socketId, (struct sockaddr *) &serverAddress, 
-                sizeof(serverAddress)) < 0){
+                sizeof(serverAddress)) < 0)
+    {
         fprintf(stderr, "Erro de Conexao.\n");
         exit(0);
     }
@@ -62,11 +68,13 @@ int connect_to_socket(void){
     return socketId;
 }
 
-void send_message(int socketId, char* message, int messageLength, int flag){
+void send_message(int socketId, char* message, int messageLength, int flag)
+{
     int canSendMessage;
     canSendMessage = send(socketId, message, messageLength, flag);
 
-    if (canSendMessage < 0){
+    if (canSendMessage < 0)
+    {
         fprintf(stderr, "Erro no envio da mensagem!\n");
     }
     
@@ -83,6 +91,6 @@ void recv_message(int socketId, char* message, int messageLength, int flag)
         fprintf(stderr, "Erro ao receber mensagem\n");
     }
 
-    fprintf(stderr, " oi %s\n",message );
+    fprintf(stderr, "resultado é: %s\n",message );
     free(message);
 }

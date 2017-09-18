@@ -40,4 +40,4 @@ exec_server:
 	./bin/server.bin $(port)
 
 exec_client:
-	./bin/client.bin
+	./bin/client.bin $(ip)
