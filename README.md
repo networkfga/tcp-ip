@@ -16,7 +16,7 @@ $ make
 
 ### Cliente
 ```
-$ make exec_client
+$ make exec_client ip=IP
 ```
 
 ### Servidor
@@ -26,6 +26,7 @@ $ make exec_server port=PORTA
 Exemplo:
 ```
 $ make exec_server port=2152
+$ make exec_client ip=192.168.0.65
 ```
 
 
