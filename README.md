@@ -69,36 +69,6 @@ freemanpivo@gnome:~/git/trab1_redes$
 
 ## 4. Execução
 
-### 4.2 Cliente
-
-Para executar a calculadora cliente, você necessita de duas variáveis, a porta em que o servidor está rodando e o endereço IP do mesmo.
-
-Para descobrir seu IP local (se o servidor foi rodado localmente) basta digitar o seguinte comando:
-COMANDO:
-```
-$ ifconfig
-```
-SAÍDA:
-```
-wlp3s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 192.168.0.20  netmask 255.255.255.0  broadcast 192.168.0.255
-```
-E Utilizar o IP logo a seguir da palavra "inet".
-
-Partindo para a execuço do cliente basta executar o seguinte comando:
-
-```
-$ make exec_client ip=IP port=PORT
-```
-Se o cliente foi executado na mesma porta e endereço IP do servidor você verá algo assim:
-
-```
-freemanpivo@gnome:~/git/trab1_redes$ make exec_client ip=107.170.77.49 port=9602
-./bin/client.bin 107.170.77.49 9602
-Client::::
->> 
-```
-
 ### 4.1 Servidor
 
 Para executar nosso servidor, precisaremos definir uma porta que ele irá receber as requisições.
@@ -120,11 +90,125 @@ Socket passivo... Feito!
 Aguardando a conexao de um cliente... Feito!
 ```
 
+### 4.2 Cliente
 
-Exemplo:
+Para executar a calculadora cliente, você necessita de duas variáveis, a porta em que o servidor está rodando e o endereço IP do mesmo.
+
+Para descobrir seu IP local (se o servidor foi rodado localmente) basta digitar o seguinte comando:
+
 ```
-$ make exec_server port=2152
-$ make exec_client ip=192.168.0.65 port=2152
+$ ifconfig
 ```
+**SAÍDA**:
+```
+wlp3s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.0.20  netmask 255.255.255.0  broadcast 192.168.0.255
+```
+E Utilizar o IP logo a seguir da palavra "inet".
+
+Partindo para a execuço do cliente basta executar o seguinte comando:
+
+```
+$ make exec_client ip=IP port=PORT
+```
+Se o cliente foi executado na mesma porta e endereço IP do servidor você verá algo assim:
+
+```
+freemanpivo@gnome:~/git/trab1_redes$ make exec_client ip=107.170.77.49 port=9602
+./bin/client.bin 107.170.77.49 9602
+Client::::
+>> 
+```
+
+## 5. Exemplos
+
+_IP_: 192.168.0.20
+_PORT_: 9602
+
+**Cliente: **
+
+```
+freemanpivo@gnome:~/git/trab1_redes$ make exec_client ip=192.168.0.20 port=9602
+./bin/client.bin 192.168.0.20 9602
+Client::::
+>> 2+2
+2+2
+Connection stablished!
+resultado é: 4
+
+>> 9*8-69/2
+9*8-69/2
+Connection stablished!
+resultado é: 37.5
+>> (1+2)*3
+(1+2)*3
+Connection stablished!
+resultado é: 9
+
+>> 2/0
+2/0
+Connection stablished!
+resultado é: 
+>> 2^3
+2^3
+Connection stablished!
+resultado é: 8
+
+>> exit
+exit
+Connection stablished!
+resultado é: 0
+
+freemanpivo@gnome:~/git/trab1_redes$
+```
+
+**Servidor:** 
+
+```
+freemanpivo@gnome:~/git/trab1_redes$ make exec_server port=9602
+./bin/server.bin 9602
+Feito!
+Abrindo o socket local... Feito!
+Ligando o socket a porta 9602... Feito!
+Socket passivo... Feito!
+Aguardando a conexao de um cliente... Feito!
+Conexão do Cliente 192.168.0.20
+Tratando comunicacao com o cliente... Feito!
+2+2 ===> 4
+
+Fechando a conexao com o cliente... Feito
+Aguardando a conexao de um cliente... Feito!
+Conexão do Cliente 192.168.0.20
+Tratando comunicacao com o cliente... Feito!
+9*8-69/2 ===> 37.5000
+Fechando a conexao com o cliente... Feito
+Aguardando a conexao de um cliente... Feito!
+Conexão do Cliente 192.168.0.20
+Tratando comunicacao com o cliente... Feito!
+(1+2)*3 ===> 9
+
+Fechando a conexao com o cliente... Feito
+Aguardando a conexao de um cliente... Feito!
+Conexão do Cliente 192.168.0.20
+Tratando comunicacao com o cliente... Feito!
+Runtime error (func=(main), adr=5): Divide by zero
+SYNTAX or BUFFER error!
+2/0 ===> 
+Fechando a conexao com o cliente... Feito
+Aguardando a conexao de um cliente... Feito!
+Conexão do Cliente 192.168.0.20
+Tratando comunicacao com o cliente... Feito!
+2^3 ===> 8
+
+Fechando a conexao com o cliente... Feito
+Aguardando a conexao de um cliente... Feito!
+Conexão do Cliente 192.168.0.20
+Tratando comunicacao com o cliente... Feito!
+exit ===> 0
+
+Fechando a conexao com o cliente... Feito
+
+```
+
 
 
