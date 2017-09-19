@@ -123,9 +123,13 @@ Client::::
 ## 5. Exemplos
 
 _IP_: 192.168.0.20
+
 _PORT_: 9602
 
-**Cliente: **
+
+**Cliente:**
+
+
 
 ```
 freemanpivo@gnome:~/git/trab1_redes$ make exec_client ip=192.168.0.20 port=9602
