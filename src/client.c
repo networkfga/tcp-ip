@@ -11,7 +11,6 @@
 int socketId = 0;
 struct sockaddr_in serverAddress;
 int bufferLength = 0;
-unsigned short serverPort = 9602;
 char* messageReceived;
 char messageSent[100];
 int length = 100 ;
@@ -21,6 +20,9 @@ void recv_message(int socketId, char* message, int messageLength, int flag);
 int main (int argc, char* const argv[])
 {	
 	char *serverIp = argv[1];
+	unsigned short serverPort;
+	serverPort = atoi(argv[2]);
+
     printf ("Client::::\n");
     const char* exit = "exit";
     
@@ -31,7 +33,7 @@ int main (int argc, char* const argv[])
         int messageLength = sizeof(messageSent);
         int flag = 0;
         fprintf(stderr, "%s\n",messageSent);
-        int result = connect_to_socket(serverIp);
+        int result = connect_to_socket(serverIp, serverPort);
 
         if (result > 0)
         {
@@ -44,7 +46,7 @@ int main (int argc, char* const argv[])
     } while (strcmp(exit, messageSent) != 0);
 }
 
-int connect_to_socket(char *serverIp)
+int connect_to_socket(char *serverIp, unsigned short serverPort)
 {
     socketId = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (socketId < 0)
